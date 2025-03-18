@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>帮助文档 - ForgetURL</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --text-color: #333;
+            --light-bg: #f8f9fa;
+            --dark-bg: #2c3e50;
+        }
+        
+        body {
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 导航栏 */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .nav-links a.active {
+            color: var(--primary-color);
+        }
+        
+        .login-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .login-btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        /* 主要内容区 */
+        .content {
+            margin-top: 120px;
+            padding: 40px 0;
+            min-height: calc(100vh - 280px);
+        }
+        
+        .page-title {
+            font-size: 2rem;
+            color: var(--dark-bg);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        /* 文档布局 */
+        .docs-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 40px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        
+        /* 侧边栏导航 */
+        .docs-sidebar {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            position: sticky;
+            top: 120px;
+            height: calc(100vh - 180px);
+            overflow-y: auto;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .sidebar-title {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--dark-bg);
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .docs-nav-list {
+            list-style-type: none;
+        }
+        
+        .docs-nav-section {
+            margin-bottom: 15px;
+        }
+        
+        .docs-nav-header {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--dark-bg);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .docs-nav-header::after {
+            content: '▼';
+            font-size: 0.8rem;
+            transition: transform 0.3s;
+        }
+        
+        .docs-nav-header.collapsed::after {
+            transform: rotate(-90deg);
+        }
+        
+        .docs-nav-items {
+            padding-left: 15px;
+            max-height: 1000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out;
+        }
+        
+        .docs-nav-items.collapsed {
+            max-height: 0;
+        }
+        
+        .docs-nav-item {
+            margin-bottom: 8px;
+        }
+        
+        .docs-nav-link {
+            text-decoration: none;
+            color: var(--text-color);
+            transition: color 0.3s;
+            font-size: 0.95rem;
+        }
+        
+        .docs-nav-link:hover, .docs-nav-link.active {
+            color: var(--primary-color);
+        }
+        
+        /* 文档内容 */
+        .docs-content {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .doc-section {
+            margin-bottom: 40px;
+            scroll-margin-top: 120px;
+        }
+        
+        .doc-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .doc-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--dark-bg);
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .doc-subtitle {
+            font-size: 1.4rem;
+            margin: 20px 0 15px;
+            color: var(--dark-bg);
+        }
+        
+        .doc-text {
+            margin-bottom: 15px;
+        }
+        
+        .doc-list {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .doc-list li {
+            margin-bottom: 8px;
+        }
+        
+        .doc-img {
+            max-width: 100%;
+            border-radius: 4px;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .doc-note {
+            background-color: var(--light-bg);
+            padding: 15px;
+            border-left: 4px solid var(--primary-color);
+            margin: 20px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .doc-step {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            align-items: flex-start;
+        }
+        
+        .step-number {
+            background-color: var(--primary-color);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            flex-grow: 1;
+        }
+        
+        .code-block {
+            background-color: #f1f1f1;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        /* 搜索栏 */
+        .search-box {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        /* 页脚 */
+        footer {
+            background-color: var(--dark-bg);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            margin-top: 80px;
+        }
+        
+        .copyright {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        /* 回到顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .docs-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .docs-sidebar {
+                position: static;
+                height: auto;
+                margin-bottom: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">ForgetURL</a>
+                <div class="nav-links">
+                    <a href="index.html">首页</a>
+                    <a href="update-log.html">更新日志</a>
+                    <a href="feedback.html">问题反馈</a>
+                    <a href="help-docs.html" class="active">帮助文档</a>
+                </div>
+                <button class="login-btn">登录</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主要内容区 -->
+    <section class="content">
+        <div class="container">
+            <h1 class="page-title">📚 ForgetURL 帮助文档中心</h1>
+            
+            <div class="docs-container">
+                <!-- 侧边栏导航 -->
+                <aside class="docs-sidebar">
+                    <h2 class="sidebar-title">文档导航</h2>
+                    <input type="text" class="search-box" placeholder="搜索文档...">
+                    
+                    <ul class="docs-nav-list">
+                        <li class="docs-nav-section">
+                            <div class="docs-nav-header">入门指南</div>
+                            <ul class="docs-nav-items">
+                                <li class="docs-nav-item"><a href="#getting-started" class="docs-nav-link active">快速开始</a></li>
+                                <li class="docs-nav-item"><a href="#account-setup" class="docs-nav-link">账户设置</a></li>
+                                <li class="docs-nav-item"><a href="#ui-overview" class="docs-nav-link">界面概览</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li class="docs-nav-section">
+                            <div class="docs-nav-header">核心功能</div>
+                            <ul class="docs-nav-items">
+                                <li class="docs-nav-item"><a href="#bookmarks-management" class="docs-nav-link">书签管理</a></li>
+                                <li class="docs-nav-item"><a href="#folder-structure" class="docs-nav-link">文件夹结构</a></li>
+                                <li class="docs-nav-item"><a href="#search-system" class="docs-nav-link">搜索系统</a></li>
+                                <li class="docs-nav-item"><a href="#enhanced-links" class="docs-nav-link">增强子链接</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li class="docs-nav-section">
+                            <div class="docs-nav-header">高级功能</div>
+                            <ul class="docs-nav-items">
+                                <li class="docs-nav-item"><a href="#collaboration" class="docs-nav-link">团队协作</a></li>
+                                <li class="docs-nav-item"><a href="#sharing" class="docs-nav-link">共享选项</a></li>
+                                <li class="docs-nav-item"><a href="#ai-features" class="docs-nav-link">AI功能</a></li>
+                                <li class="docs-nav-item"><a href="#archiving" class="docs-nav-link">页面存档</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li class="docs-nav-section">
+                            <div class="docs-nav-header">账户与安全</div>
+                            <ul class="docs-nav-items">
+                                <li class="docs-nav-item"><a href="#security" class="docs-nav-link">安全设置</a></li>
+                                <li class="docs-nav-item"><a href="#backup" class="docs-nav-link">备份与恢复</a></li>
+                                <li class="docs-nav-item"><a href="#privacy" class="docs-nav-link">隐私保护</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li class="docs-nav-section">
+                            <div class="docs-nav-header">集成与API</div>
+                            <ul class="docs-nav-items">
+                                <li class="docs-nav-item"><a href="#extensions" class="docs-nav-link">浏览器扩展</a></li>
+                                <li class="docs-nav-item"><a href="#mobile-apps" class="docs-nav-link">移动应用</a></li>
+                                <li class="docs-nav-item"><a href="#api-docs" class="docs-nav-link">API文档</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </aside>
+                
+                <!-- 文档内容 -->
+                <div class="docs-content">
+                    <!-- 入门指南 -->
+                    <section id="getting-started" class="doc-section">
+                        <h2 class="doc-title">快速开始</h2>
+                        <p class="doc-text">欢迎使用ForgetURL，您的知识库管理专家。本指南将帮助您快速上手，充分利用ForgetURL的强大功能。</p>
+                        
+                        <h3 class="doc-subtitle">创建您的第一个知识库</h3>
+                        
+                        <div class="doc-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <p>登录ForgetURL账户后，点击主面板上的"创建知识库"按钮。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="doc-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <p>为您的知识库命名并选择可选的图标和描述。例如"工作资料"、"学习资源"或"个人收藏"。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="doc-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <p>选择一个合适的模板（可选）或从零开始创建。我们提供多种预设模板适合不同使用场景。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="doc-step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <p>点击"确认创建"，您的知识库就准备好了！</p>
+                            </div>
+                        </div>
+                        
+                        <h3 class="doc-subtitle">添加您的第一个书签</h3>
+                        
+                        <div class="doc-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <p>在您的知识库中，点击顶部工具栏的"+"按钮或使用快捷键 Ctrl+N (Windows) / Cmd+N (Mac)。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="doc-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <p>粘贴URL地址到弹出窗口，系统将自动获取网页标题和描述。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="doc-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <p>添加自定义标签（可选）以便于后续检索，选择保存位置（默认为根目录）。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="doc-step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <p>点击"保存"，您的第一个书签就添加完成了！</p>
+                            </div>
+                        </div>
+                        
+                        <div class="doc-note">
+                            <strong>小贴士：</strong> 安装我们的浏览器扩展后，您可以直接在浏览网页时点击工具栏上的ForgetURL图标，一键将当前页面添加到您的知识库中。
+                        </div>
+                        
+                        <h3 class="doc-subtitle">导入现有书签</h3>
+                        <p class="doc-text">如果您有大量浏览器书签想要导入，我们提供了简便的批量导入功能：</p>
+                        
+                        <div class="doc-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <p>从您的浏览器中导出书签为HTML文件。（各浏览器操作方式不同，请参考各浏览器帮助）</p>
+                            </div>
+                        </div>
+                        
+                        <div class="doc-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <p>在ForgetURL中，点击"设置" > "导入/导出" > "导入书签"。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="doc-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <p>上传您刚才导出的书签HTML文件，选择要导入的目标知识库。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="doc-step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <p>设置导入选项（如是否保留原有文件夹结构、是否跳过重复项等）。</p>
+                            </div>
+                        </div>
+                        
+                        <div class="doc-step">
+                            <div class="step-number">5</div>
+                            <div class="step-content">
+                                <p>点击"开始导入"，等待导入完成。导入速度取决于书签数量，大型导入可能需要几分钟时间。</p>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- 账户设置 -->
+                    <section id="account-setup" class="doc-section">
+                        <h2 class="doc-title">账户设置</h2>
+                        <p class="doc-text">在本节中，您将了解如何配置和优化您的ForgetURL账户设置，包括个人信息、通知偏好、数据同步设置等。</p>
+                        
+                        <h3 class="doc-subtitle">个人资料设置</h3>
+                        <p class="doc-text">访问"设置" > "个人资料"来修改您的基本信息：</p>
+                        <ul class="doc-list">
+                            <li>头像 - 上传个性化图片或从预设中选择</li>
+                            <li>显示名称 - 在协作空间中展示的名称</li>
+                            <li>个人简介 - 向协作者介绍自己</li>
+                            <li>时区设置 - 确保所有时间戳正确显示</li>
+                        </ul>
+                        
+                        <h3 class="doc-subtitle">通知设置</h3>
+                        <p class="doc-text">访问"设置" > "通知"来控制何时以及如何收到提醒：</p>
+                        <ul class="doc-list">
+                            <li>协作更新 - 当协作知识库有变化时</li>
+                            <li>系统通知 - 关于产品更新和维护信息</li>
+                            <li>推荐内容 - 基于您的收藏推荐相关资源</li>
+                            <li>链接健康报告 - 定期检查您的链接是否有效</li>
+                        </ul>
+                        
+                        <h3 class="doc-subtitle">数据同步设置</h3>
+                        <p class="doc-text">访问"设置" > "同步与存储"来控制数据如何跨设备同步：</p>
+                        <ul class="doc-list">
+                            <li>自动同步 - 设置同步频率和条件</li>
+                            <li>离线访问 - 哪些知识库可在离线环境访问</li>
+                            <li>存储管理 - 查看和管理您的存储空间使用情况</li>
+                        </ul>
+                        
+                        <div class="doc-note">
+                            <strong>提示：</strong> 专业版用户可享受优先同步和更大的存储空间。考虑升级以获得最佳体验。
+                        </div>
+                    </section>
+                    
+                    <!-- 书签管理（更多内容省略以保持简洁） -->
+                    <section id="bookmarks-management" class="doc-section">
+                        <h2 class="doc-title">书签管理</h2>
+                        <p class="doc-text">ForgetURL提供强大而灵活的书签管理功能，帮助您有效组织大量网络资源。</p>
+                        
+                        <h3 class="doc-subtitle">基础操作</h3>
+                        <p class="doc-text">掌握以下基础操作，快速管理您的书签：</p>
+                        <ul class="doc-list">
+                            <li><strong>添加书签</strong> - 使用"+"按钮、键盘快捷键或浏览器扩展</li>
+                            <li><strong>编辑书签</strong> - 右键单击或使用编辑图标修改书签信息</li>
+                            <li><strong>移动书签</strong> - 拖放到目标文件夹或使用"移动到"选项</li>
+                            <li><strong>删除书签</strong> - 选中后按Delete键或使用右键菜单</li>
+                        </ul>
+                        
+                        <div class="doc-note">
+                            <strong>注意：</strong> 删除的书签会存放在"回收站"中30天，您可以在此期间恢复它们。
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <p>网站版权归 @forgeturl</p>
+            <p class="copyright">ICP备案号: 待定</p>
+        </div>
+    </footer>
+
+    <!-- 回到顶部按钮 -->
+    <div class="back-to-top">↑</div>
+
+    <script>
+        // 回到顶部按钮的显示和隐藏
+        window.addEventListener('scroll', function() {
+            const backToTopBtn = document.querySelector('.back-to-top');
+            const scrollHeight = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // 当滚动超过视口高度时显示按钮
+            if (scrollHeight > window.innerHeight / 2) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+        
+        // 点击回到顶部
+        document.querySelector('.back-to-top').addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // 侧边栏导航交互
+        document.querySelectorAll('.docs-nav-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const items = header.nextElementSibling;
+                header.classList.toggle('collapsed');
+                items.classList.toggle('collapsed');
+            });
+        });
+        
+        // 文档导航链接高亮
+        document.querySelectorAll('.docs-nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                // 移除所有active类
+                document.querySelectorAll('.docs-nav-link').forEach(l => {
+                    l.classList.remove('active');
+                });
+                
+                // 为当前点击的链接添加active类
+                link.classList.add('active');
+            });
+        });
+        
+        // 模拟搜索功能
+        document.querySelector('.search-box').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                alert('搜索功能正在完善中，敬请期待！');
+                this.value = '';
+            }
+        });
+    </script>
+</body>
+</html> 

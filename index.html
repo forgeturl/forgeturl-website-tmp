@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ForgetURL - 专属知识库管家</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --text-color: #333;
+            --light-bg: #f8f9fa;
+            --dark-bg: #2c3e50;
+        }
+        
+        body {
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 导航栏 */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .login-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .login-btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        /* 英雄区 */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin-top: 70px;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 0 20px;
+        }
+        
+        .hero-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--dark-bg);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: #555;
+        }
+        
+        /* 功能区 */
+        .features {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            font-size: 2rem;
+            color: var(--dark-bg);
+        }
+        
+        .feature-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background-color: var(--light-bg);
+            border-radius: 8px;
+            padding: 30px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--dark-bg);
+        }
+        
+        .feature-description {
+            margin-bottom: 15px;
+        }
+        
+        .feature-list {
+            list-style-type: none;
+        }
+        
+        .feature-list li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .feature-list li::before {
+            content: "✓";
+            color: var(--primary-color);
+            position: absolute;
+            left: 0;
+        }
+        
+        /* 使用场景 */
+        .use-cases {
+            padding: 80px 0;
+            background-color: var(--light-bg);
+        }
+        
+        .scenario-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .scenario-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .scenario-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--dark-bg);
+        }
+        
+        /* 行动召唤 */
+        .cta {
+            padding: 80px 0;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .cta-title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        
+        .cta-text {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .cta-btn {
+            display: inline-block;
+            background-color: white;
+            color: var(--primary-color);
+            font-weight: bold;
+            padding: 15px 30px;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: transform 0.3s;
+            margin: 10px;
+        }
+        
+        .cta-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        /* 页脚 */
+        footer {
+            background-color: var(--dark-bg);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+        
+        .copyright {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        /* 回到顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">ForgetURL</a>
+                <div class="nav-links">
+                    <a href="index.html">首页</a>
+                    <a href="update-log.html">更新日志</a>
+                    <a href="feedback.html">问题反馈</a>
+                    <a href="help-docs.html">帮助文档</a>
+                </div>
+                <button class="login-btn">登录</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 英雄区 -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">【高效整理 · 智慧共享】您的专属知识库管家</h1>
+                <p class="hero-subtitle">——让每一份收藏都成为生产力</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 功能区 -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">📌 核心功能亮点</h2>
+            <div class="feature-cards">
+                <div class="feature-card">
+                    <div class="feature-icon">✨</div>
+                    <h3 class="feature-title">立体化书签架构</h3>
+                    <ul class="feature-list">
+                        <li>多层级页面+文件夹体系，像整理实体书籍一样为知识分类</li>
+                        <li>每个书签支持绑定「增强子链接」（文档/翻译/存档等版本），构建专属资源矩阵</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3 class="feature-title">三维精准搜索</h3>
+                    <ul class="feature-list">
+                        <li>内容关键词+URL模糊匹配+自定义标签三重检索</li>
+                        <li>0.1秒定位目标链接，海量收藏永不迷航</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🤝</div>
+                    <h3 class="feature-title">智能协作空间</h3>
+                    <ul class="feature-list">
+                        <li>权限自由掌控：只读分享链接 / 多人协同编辑</li>
+                        <li>团队知识库实时同步更新，告别重复收藏的混乱</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 使用场景 -->
+    <section class="use-cases">
+        <div class="container">
+            <h2 class="section-title">💡 深度管理场景</h2>
+            <div class="scenario-cards">
+                <div class="scenario-card">
+                    <h3 class="scenario-title">学术研究者</h3>
+                    <p>文献资料+参考版本+笔记批注一站式管理</p>
+                </div>
+                
+                <div class="scenario-card">
+                    <h3 class="scenario-title">设计师</h3>
+                    <p>灵感素材库自动打标分类，支持多版本源文件存档</p>
+                </div>
+                
+                <div class="scenario-card">
+                    <h3 class="scenario-title">项目团队</h3>
+                    <p>需求文档+竞品分析+参考资料云端协同</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 行动召唤 -->
+    <section class="cta">
+        <div class="container">
+            <h2 class="cta-title">🚀 现在开启高效之旅</h2>
+            <p class="cta-text">告别浏览器里99+未分类标签页，重构你的数字资产价值链</p>
+            <a href="#" class="cta-btn">立即免费注册，首月解锁高级协作功能</a>
+            <a href="#" class="cta-btn">全平台同步支持，收藏从未如此优雅</a>
+            <p class="cta-text" style="margin-top: 30px;">【智能书签3.0】—— 当知识管理遇见多维架构设计</p>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <p>网站版权归 @forgeturl</p>
+            <p class="copyright">ICP备案号: 待定</p>
+        </div>
+    </footer>
+
+    <!-- 回到顶部按钮 -->
+    <div class="back-to-top">↑</div>
+
+    <script>
+        // 回到顶部按钮的显示和隐藏
+        window.addEventListener('scroll', function() {
+            const backToTopBtn = document.querySelector('.back-to-top');
+            const scrollHeight = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // 当滚动超过视口高度时显示按钮
+            if (scrollHeight > window.innerHeight) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+        
+        // 点击回到顶部
+        document.querySelector('.back-to-top').addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html> 

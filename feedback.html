@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>问题反馈 - ForgetURL</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --text-color: #333;
+            --light-bg: #f8f9fa;
+            --dark-bg: #2c3e50;
+        }
+        
+        body {
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 导航栏 */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .nav-links a.active {
+            color: var(--primary-color);
+        }
+        
+        .login-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .login-btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        /* 主要内容区 */
+        .content {
+            margin-top: 120px;
+            padding: 40px 0;
+            min-height: calc(100vh - 280px);
+        }
+        
+        .page-title {
+            font-size: 2rem;
+            color: var(--dark-bg);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .page-subtitle {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 60px;
+            color: #666;
+        }
+        
+        /* 问题反馈部分 */
+        .feedback-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .feedback-form {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .form-textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        /* 联系方式区域 */
+        .contact-info {
+            background-color: var(--light-bg);
+            border-radius: 8px;
+            padding: 30px;
+        }
+        
+        .contact-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--dark-bg);
+        }
+        
+        .contact-item {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .contact-icon {
+            margin-right: 15px;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+        
+        .faq-section {
+            margin-top: 60px;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .faq-title {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            color: var(--dark-bg);
+        }
+        
+        .faq-item {
+            margin-bottom: 20px;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .faq-question {
+            padding: 20px;
+            cursor: pointer;
+            position: relative;
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .faq-question::after {
+            content: "▼";
+            font-size: 0.8rem;
+            transition: transform 0.3s;
+        }
+        
+        .faq-question.active::after {
+            transform: rotate(180deg);
+        }
+        
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s, padding 0.3s;
+        }
+        
+        .faq-answer.show {
+            padding: 0 20px 20px;
+            max-height: 500px;
+        }
+        
+        /* 页脚 */
+        footer {
+            background-color: var(--dark-bg);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            margin-top: 80px;
+        }
+        
+        .copyright {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        /* 回到顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .feedback-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">ForgetURL</a>
+                <div class="nav-links">
+                    <a href="index.html">首页</a>
+                    <a href="update-log.html">更新日志</a>
+                    <a href="feedback.html" class="active">问题反馈</a>
+                    <a href="help-docs.html">帮助文档</a>
+                </div>
+                <button class="login-btn">登录</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主要内容区 -->
+    <section class="content">
+        <div class="container">
+            <h1 class="page-title">💬 问题反馈与建议</h1>
+            <p class="page-subtitle">我们非常重视您的体验和建议。任何问题或想法，都可以通过以下方式告诉我们，帮助ForgetURL变得更好！</p>
+            
+            <div class="feedback-container">
+                <div class="feedback-form">
+                    <form id="feedbackForm">
+                        <div class="form-group">
+                            <label for="name" class="form-label">您的姓名</label>
+                            <input type="text" id="name" class="form-input" placeholder="请输入您的姓名">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email" class="form-label">电子邮箱</label>
+                            <input type="email" id="email" class="form-input" placeholder="请输入您的电子邮箱">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="feedback-type" class="form-label">反馈类型</label>
+                            <select id="feedback-type" class="form-select">
+                                <option value="bug">Bug报告</option>
+                                <option value="feature">功能建议</option>
+                                <option value="question">使用疑问</option>
+                                <option value="other">其他</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message" class="form-label">详细描述</label>
+                            <textarea id="message" class="form-textarea" placeholder="请详细描述您遇到的问题或建议..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">提交反馈</button>
+                    </form>
+                </div>
+                
+                <div class="contact-info">
+                    <h2 class="contact-title">其他联系方式</h2>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">📧</div>
+                        <div>
+                            <h3>电子邮件</h3>
+                            <p>support@forgeturl.com</p>
+                            <p>工作日回复时间：24小时内</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">💬</div>
+                        <div>
+                            <h3>社区论坛</h3>
+                            <p>forum.forgeturl.com</p>
+                            <p>与其他用户讨论问题和分享使用技巧</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">🐦</div>
+                        <div>
+                            <h3>社交媒体</h3>
+                            <p>微博：@ForgetURL官方</p>
+                            <p>微信公众号：ForgetURL</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">👨‍💻</div>
+                        <div>
+                            <h3>GitHub Issue</h3>
+                            <p>github.com/forgeturl/issues</p>
+                            <p>开发者可直接提交技术问题</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 常见问题部分 -->
+            <div class="faq-section">
+                <h2 class="faq-title">常见问题解答</h2>
+                
+                <div class="faq-item">
+                    <div class="faq-question">如何快速导入我浏览器中的书签？</div>
+                    <div class="faq-answer">
+                        <p>ForgetURL支持从主流浏览器（Chrome、Firefox、Safari、Edge等）一键导入书签。登录后，点击「设置」-「导入/导出」-「从浏览器导入」，按照指引操作即可。导入后系统会自动保留原有的文件夹结构。</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">ForgetURL的数据安全性如何保障？</div>
+                    <div class="faq-answer">
+                        <p>我们采用行业标准的加密技术保护您的数据安全。所有数据传输均通过HTTPS加密，存储的数据采用AES-256加密。同时，我们提供多种备份方案，支持定期自动备份到您指定的云存储空间。此外，您还可以随时导出全部数据的完整备份。</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">如何与团队成员共享特定的书签集合？</div>
+                    <div class="faq-answer">
+                        <p>在任意书签文件夹上右键点击，选择「共享设置」，您可以：1) 生成只读分享链接；2) 邀请特定用户以编辑者身份协作；3) 设置公开可见状态。共享后，您可以随时在「共享管理」中查看或修改权限设置。</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">免费版和专业版有什么区别？</div>
+                    <div class="faq-answer">
+                        <p>免费版提供基础的书签管理功能，包括多级目录、基本搜索和单设备同步。专业版则提供更多高级功能，包括：1) 无限存储空间；2) 全平台多设备同步；3) 增强子链接功能；4) 高级协作与分享选项；5) AI智能摘要；6) 优先获取新功能。详细比较请参阅我们的定价页面。</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">遇到过期链接怎么办？</div>
+                    <div class="faq-answer">
+                        <p>ForgetURL提供多重防失效保障：1) 自动网页快照功能会定期保存重要页面的完整内容；2) 与Wayback Machine集成，一键查看历史版本；3) 链接检测功能会定期检查并标记失效链接，您可以选择自动更新或手动处理。专业版用户可享受所有这些功能。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <p>网站版权归 @forgeturl</p>
+            <p class="copyright">ICP备案号: 待定</p>
+        </div>
+    </footer>
+
+    <!-- 回到顶部按钮 -->
+    <div class="back-to-top">↑</div>
+
+    <script>
+        // 回到顶部按钮的显示和隐藏
+        window.addEventListener('scroll', function() {
+            const backToTopBtn = document.querySelector('.back-to-top');
+            const scrollHeight = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // 当滚动超过视口高度时显示按钮
+            if (scrollHeight > window.innerHeight / 2) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+        
+        // 点击回到顶部
+        document.querySelector('.back-to-top').addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // FAQ折叠效果
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const isOpen = answer.classList.contains('show');
+                
+                // 关闭所有其他FAQ
+                document.querySelectorAll('.faq-answer').forEach(item => {
+                    item.classList.remove('show');
+                });
+                
+                document.querySelectorAll('.faq-question').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // 如果点击的不是当前打开的，则打开它
+                if (!isOpen) {
+                    answer.classList.add('show');
+                    question.classList.add('active');
+                }
+            });
+        });
+        
+        // 表单提交处理
+        document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('感谢您的反馈！我们将尽快处理您的问题。');
+            this.reset();
+        });
+    </script>
+</body>
+</html> 
